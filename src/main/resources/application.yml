@@ -1,0 +1,105 @@
+server:
+  port: ${SERVER_PORT:8080}
+  servlet:
+    context-path: /
+  tomcat:
+    max-swallow-size: 2MB
+    max-http-form-post-size: 2MB
+
+spring:
+  application:
+    name: google-maps-mcp-server
+  main:
+    banner-mode: ${BANNER_MODE:console}
+  ai:
+    mcp:
+      server:
+        enabled: true
+        name: google-maps-mcp-server
+        version: 1.0.0
+        type: SYNC
+        protocol: ${MCP_HTTP_PROTOCOL:STREAMABLE}
+        stdio: ${MCP_STDIO_ENABLED:false}
+        instructions: >
+          Intelligent geographical, mapping, places, geocoding, routing, distance matrix, and GIS analysis MCP server.
+          Provides 20 strongly-typed tools powered by Google Maps Platform, OpenStreetMap (Nominatim, Overpass, OSRM),
+          Mapbox, GraphHopper, OpenRouteService, and JTS Topology Suite.
+
+maps:
+  provider: ${MAP_PROVIDER:openstreetmap}
+  fallback-enabled: ${MAP_FALLBACK_ENABLED:true}
+  allow-localhost-urls: ${ALLOW_LOCALHOST_URLS:false}
+  connect-timeout-ms: ${HTTP_CONNECT_TIMEOUT_MS:5000}
+  read-timeout-ms: ${HTTP_READ_TIMEOUT_MS:15000}
+  google:
+    api-key: ${GOOGLE_MAPS_API_KEY:}
+    base-url: ${GOOGLE_MAPS_BASE_URL:https://maps.googleapis.com}
+  nominatim:
+    base-url: ${NOMINATIM_BASE_URL:https://nominatim.openstreetmap.org}
+  overpass:
+    base-url: ${OVERPASS_BASE_URL:https://overpass-api.de/api/interpreter}
+  osrm:
+    base-url: ${OSRM_BASE_URL:https://router.project-osrm.org}
+  mapbox:
+    access-token: ${MAPBOX_ACCESS_TOKEN:}
+    base-url: ${MAPBOX_BASE_URL:https://api.mapbox.com}
+  graphhopper:
+    api-key: ${GRAPHHOPPER_API_KEY:}
+    base-url: ${GRAPHHOPPER_BASE_URL:https://graphhopper.com/api/1}
+  openrouteservice:
+    api-key: ${OPENROUTESERVICE_API_KEY:}
+    base-url: ${OPENROUTESERVICE_BASE_URL:https://api.openrouteservice.org}
+  open-elevation:
+    base-url: ${OPEN_ELEVATION_BASE_URL:https://api.open-meteo.com}
+  tiles:
+    osm-tile-url-template: ${OSM_TILE_URL_TEMPLATE:https://tile.openstreetmap.org/{z}/{x}/{y}.png}
+  cache:
+    enabled: ${CACHE_ENABLED:true}
+    ttl-seconds: ${CACHE_TTL:3600}
+    max-size: ${CACHE_MAX_SIZE:2000}
+
+resilience4j:
+  ratelimiter:
+    instances:
+      nominatim:
+        limitForPeriod: 1
+        limitRefreshPeriod: 1s
+        timeoutDuration: 5s
+      google:
+        limitForPeriod: 25
+        limitRefreshPeriod: 1s
+        timeoutDuration: 5s
+  retry:
+    instances:
+      providerRetry:
+        maxAttempts: 3
+        waitDuration: 500ms
+        enableExponentialBackoff: true
+        exponentialBackoffMultiplier: 2
+        ignoreExceptions:
+          - com.example.mapsmcp.exceptions.ValidationException
+          - com.example.mapsmcp.exceptions.UnsupportedCapabilityException
+          - com.example.mapsmcp.exceptions.ProviderApiException
+  circuitbreaker:
+    instances:
+      providerCircuitBreaker:
+        slidingWindowSize: 10
+        failureRateThreshold: 50
+        waitDurationInOpenState: 15s
+
+management:
+  health:
+    redis:
+      enabled: ${REDIS_HEALTH_ENABLED:false}
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,caches
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  level:
+    root: ${LOG_LEVEL:INFO}
+    com.example.mapsmcp: ${LOG_LEVEL:INFO}

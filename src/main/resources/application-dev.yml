@@ -1,0 +1,14 @@
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+maps:
+  allow-localhost-urls: true
+  cache:
+    enabled: true
+    ttl-seconds: 600
+
+logging:
+  level:
+    com.example.mapsmcp: DEBUG

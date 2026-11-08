@@ -1,0 +1,17 @@
+spring:
+  config:
+    activate:
+      on-profile: prod
+  main:
+    banner-mode: "off"
+
+maps:
+  allow-localhost-urls: false
+  cache:
+    enabled: true
+    ttl-seconds: 3600
+
+logging:
+  level:
+    root: WARN
+    com.example.mapsmcp: INFO

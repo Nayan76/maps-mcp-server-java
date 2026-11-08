@@ -1,0 +1,89 @@
+# =============================================================================
+# Environment variables and secrets (NEVER commit actual secrets)
+# =============================================================================
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+*.crt
+*.cer
+*.der
+*credentials*.json
+*service-account*.json
+secrets/
+credentials/
+
+# =============================================================================
+# Java and Maven build artifacts
+# =============================================================================
+target/
+*.class
+*.jar
+*.war
+*.ear
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+.kotlin
+
+# =============================================================================
+# Logs and runtime data
+# =============================================================================
+*.log
+logs/
+*.dump
+*.dumpstream
+
+# =============================================================================
+# IDEs and Editors
+# =============================================================================
+.idea/
+*.iws
+*.iml
+*.ipr
+.vscode/
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings/
+.springBeans
+.sts4-cache
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# =============================================================================
+# Operating system files
+# =============================================================================
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# =============================================================================
+# Local configuration overrides
+# =============================================================================
+application-local.properties
+application-local.yml
+application-local.yaml
+application-secret.properties
+application-secret.yml
+application-secret.yaml
+
+# =============================================================================
+# Temporary and backup files
+# =============================================================================
+*.tmp
+*.bak
+*.swp
+*~

@@ -1,0 +1,21 @@
+{
+  "mcpServers": {
+    "google-maps-mcp-server": {
+      "command": "java",
+      "args": [
+        "-Dspring.ai.mcp.server.stdio=true",
+        "-Dspring.main.web-application-type=none",
+        "-Dspring.main.banner-mode=off",
+        "-jar",
+        "/absolute/path/to/maps-mcp-server-java/target/google-maps-mcp-server.jar"
+      ],
+      "env": {
+        "MCP_TRANSPORT": "stdio",
+        "MAP_PROVIDER": "openstreetmap",
+        "GOOGLE_MAPS_API_KEY": "",
+        "CACHE_ENABLED": "true",
+        "LOG_LEVEL": "WARN"
+      }
+    }
+  }
+}
